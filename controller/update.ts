@@ -25,5 +25,20 @@ export const fetchAllUpdate =  async(req,res) => {
 
     res.json({message : updates});
 } 
+export const createUpdate = async (req, res) => {
+    const product =  await prisma.product.findUnique({
+        where : {
+            id : req.body.productId
+        }
+    })
+    if(!product) {
+        return res.json({message : "not your product"})
+    }
+
+    const update = await prisma.update.create({
+        data : req.body
+    })
+    res.json({data : update})
+}
 export const deleteUpdate =  async(req,res) => {} 
 export const updateUpdate =  async(req,res) => {}  

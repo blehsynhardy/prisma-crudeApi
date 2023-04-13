@@ -39,8 +39,9 @@ export const validate_product = async (req, res, next) => {
 export const validate_update = async (req, res, next) => {
 
     const schema = Joi.object({
-        title : Joi.string().required,
-        body : Joi.string().required
+        title : Joi.string().required(),
+        body : Joi.string().required(),
+        productId : Joi.string().required()
     })  
     try {
         await schema.validateAsync(req.body);
@@ -57,7 +58,7 @@ export const validate_Updateupdate = async (req, res, next) => {
         title : Joi.string().optional(),
         body : Joi.string().optional(),
         status : Joi.valid(['IN_PROGESS', 'SHIPPED', 'DEPRECATED']),
-        version :Joi.string().required()
+        version :Joi.string().optional( )
     })  
     
     try {

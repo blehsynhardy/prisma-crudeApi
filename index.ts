@@ -6,6 +6,7 @@ import path from 'path'
 import { protect } from './auth/auth';
 import user from './routes/user';
 import product from './routes/product';
+import update from './routes/update';
 import { notFound } from './middleware/not-found'; 
 
 
@@ -19,6 +20,7 @@ dotenv.config();
 const PORT = process.env.PORT || 7000;
 app.use('/api/user', user);
 app.use('/api/product',protect, product)
+app.use('/api/update', protect, update);
 app.use(notFound)
 
 app.listen(PORT, ()=> console.log(`app running on ${PORT}`));

@@ -1,7 +1,6 @@
 import Joi  from 'joi';
 
 export const login_schema = async (req, res, next) => {
-    console.log(req.body);
 
     const schema = Joi.object({
         username: Joi.string()
@@ -9,9 +8,8 @@ export const login_schema = async (req, res, next) => {
             .min(3)
             .max(30)
             .required(),
-    
         password: Joi.string()
-            .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
+        .pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
     })
     try {
         await schema.validateAsync(req.body);
@@ -22,7 +20,6 @@ export const login_schema = async (req, res, next) => {
     }
 
 }
-
 
 export const validate_product = async (req, res, next) => {
     console.log(req.body);
@@ -39,12 +36,13 @@ export const validate_product = async (req, res, next) => {
     }
 }   
 
-
 export const validate_update = async (req, res, next) => {
     console.log(req.body);
 
     const schema = Joi.object({
-        name : Joi.string().required()
+       // status: Joi.string().valid(['IN_PROGESS', 'SHIPPED', 'DEPRECATED']),
+        version : Joi.string()
+
     })  
     try {
         await schema.validateAsync(req.body);

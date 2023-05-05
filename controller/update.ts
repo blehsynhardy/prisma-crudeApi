@@ -1,13 +1,19 @@
 import prisma from "../helpers/db"
 
-export const singleUpdate =  async(req,res) => {
-    const update = prisma.update.findUnique({
-        where : {
-            id: req.param.id,
-        }
-    })
-    res.status(200).status({message : update})
+export const singleUpdate =  async( req, res) => {
+
+    try {
+        const update = await prisma.update.findUnique({
+            where : {
+                id: req.params.id,
+            }
+        })
+        res.status(200).json({message : update})
+     }  catch(e) {
+            res.json({message : "there is a problem while fetching data"})
+    }
 } 
+
 export const fetchAllUpdate =  async(req,res) => {
 
     const products = await prisma.product.findMany({
@@ -41,7 +47,7 @@ export const createUpdate = async(req, res) => {
         data : {
             title : req.body.title,
             body : req.body.body,
-            ProductId : req.body.productId
+            product : {connect : {id : product.id}}
         }
     })
 
@@ -83,6 +89,7 @@ export const deleteUpdate =  async(req,res) => {
 
 
 export const updateUpdate =  async(req,res) => {
+     console.log(req.user.id)
     const products = await prisma.product.findMany({
         where : {
             belongsToId : req.user.id
@@ -96,14 +103,17 @@ export const updateUpdate =  async(req,res) => {
         return [...allUpdates, ...product.Update]
     }, [])
 
-    const match =  updates.find(update => update.id === req.param.id);
+    console.log(updates)
+
+    const match =  updates.find(update => update.id === req.params.id);
+    console.log(match)
     if(!match) {
         return res.json({message : "Not matching data"})
     } 
 
     const updateUpdate = await prisma.update.update({
         where : {
-            id : req.param.id
+            id : req.params.id
         },
         data : req.body
     })

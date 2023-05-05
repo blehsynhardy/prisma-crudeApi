@@ -8,6 +8,7 @@ import user from './routes/user';
 import product from './routes/product';
 import update from './routes/update';
 import { notFound } from './middleware/not-found'; 
+import error from './middleware/error-handler';
 
 
 const app = express()
@@ -22,6 +23,7 @@ app.use('/api/user', user);
 app.use('/api/product',protect, product)
 app.use('/api/update', protect, update);
 app.use(notFound)
+app.use(error)
 
 app.listen(PORT, ()=> console.log(`app running on ${PORT}`));
 app.get('/', (req, res) => {

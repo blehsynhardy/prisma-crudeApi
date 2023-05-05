@@ -1,7 +1,7 @@
 import { comparePassword, createJwt, hashpassword } from '../auth/auth';
 import prisma from '../helpers/db';
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
     let checkUsername = req.body.username
 try {
   let isExistingUser =  await prisma.user.findUnique({
@@ -13,7 +13,6 @@ try {
     if (isExistingUser) {
         return res.json({message: "User already exists"})
     }
-
     const user = await prisma.user.create({
         data:{
             username : req.body.username,
@@ -22,9 +21,9 @@ try {
     })
     const token = createJwt(user);
     res.json({token});
-    } catch (error) {
-        console.log(error)
-        res.json({message: "Something went wrong"})
+    } catch (e) {
+        e.type = 'input'
+        next(e)
     }
 }
 
@@ -49,7 +48,7 @@ export const signIn = async (req, res) => {
             res.json({message : "username not found"})
         }
     } catch(err) {
-        res.json({message : "something went wrong \n" + err})
+        res.json({message : "something went wrong \n"})
     }
     
 }
